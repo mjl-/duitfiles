@@ -75,7 +75,6 @@ func newColumnUI(files *files, colIndex int, name string, names []string) (ui *c
 					if len(colNames) > 0 {
 						colsUI.selectName(colIndex+1, colNames[0])
 					}
-					dui.Render()
 					dui.Focus(colsUI.Kids[len(colsUI.Kids)-1].UI.(*columnUI).list)
 				}
 			}
@@ -129,7 +128,6 @@ func newColumnUI(files *files, colIndex int, name string, names []string) (ui *c
 			ui.list.Values = nl
 			if exactMatch {
 				colsUI.selectName(colIndex, newValue)
-				dui.Render()
 				dui.Focus(colsUI.Kids[len(colsUI.Kids)-1].UI.(*columnUI).field)
 			}
 			e.NeedDraw = true

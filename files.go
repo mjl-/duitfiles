@@ -39,7 +39,6 @@ func (f *files) error(err error, msg string) bool {
 	}
 	f.errorLabel.Text = fmt.Sprintf("%s: %s", msg, err)
 	f.dui.MarkLayout(nil)
-	f.dui.Render()
 	f.dui.Focus(f.errorClear)
 	return true
 }
@@ -68,6 +67,23 @@ func (f *files) listDir(path string) []string {
 }
 
 // Select creates a new window with the file picker and returns the selected filename or an error.
+//
+// The window shows favoites on the left. The user's home directory
+// and the file system root are always listed. Along with any entries from
+// $appdata/duitfiles/favorites (each line is a directory listed in
+// the favorites). The +/- button adds/removes a favorite from the
+// list.
+//
+// On the right side, you'll see at least one column with the files
+// in the directory, the selected favorite. Typing in the search box
+// above the files filters by substring. Hitting ctrl-f completes
+// the text, making it the longest common prefix of the files still
+// visible. After having typed/completed/clicked an exact match for
+// a file, that file is selected. For directories, this opens a new
+// columns and warps the pointer to its search box.
+//
+// The currently selected path is shown at the top.
+// Hitting the "select"-button, or return, returns the selected path.
 func Select() (filename string, err error) {
 	f := &files{
 		selected: make(chan string),
@@ -155,7 +171,7 @@ func Select() (filename string, err error) {
 				Kids: duit.NewKids(
 					&duit.Box{
 						Padding: duit.Space{Left: duit.ScrollbarSize, Top: 4, Bottom: 4},
-						Margin: image.Pt(6, 4),
+						Margin:  image.Pt(6, 4),
 						Kids:    duit.NewKids(f.pathLabel, f.selectButton),
 					},
 					f.contentUI,

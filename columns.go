@@ -39,7 +39,6 @@ func (ui *columnsUI) selectName(col int, name string) {
 	newColUI := newColumnUI(ui.files, len(ui.Kids), name, ui.files.listDir(path))
 	ui.Kids = append(ui.Kids, &duit.Kid{UI: newColUI})
 	dui.MarkLayout(ui)
-	dui.Render()
 	dui.Focus(newColUI.field)
 }
 
